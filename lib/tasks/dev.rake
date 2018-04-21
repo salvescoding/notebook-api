@@ -24,5 +24,15 @@ namespace :dev do
     puts "Contacts registered successfully"
 
 
+    puts "Adding phone number to contacts"
+    Contact.all.each do |contact|
+      Random.rand(5).times do
+        phone = Phone.create!(number: Faker::PhoneNumber.cell_phone, contact_id: contact.id)
+        contact.phones << phone
+        contact.save!
+      end
+    end
+    puts "Adding phone number completed"
+
   end
 end

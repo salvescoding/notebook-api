@@ -1,7 +1,9 @@
 namespace :dev do
   desc "Setup the development environment"
   task setup: :environment do
-
+    puts "Reset"
+    %x(rails db:drop db:create db:migrate)
+    puts "Reset completed"
 
     kinds = %w(Friend Business Comercial)
 
@@ -33,6 +35,16 @@ namespace :dev do
       end
     end
     puts "Adding phone number completed"
+
+
+    puts "Adding address to contacts"
+    Contact.all.each do |contact|
+        address = Address.create!(street: Faker::Address.street_address, city: Faker::Address.city,
+        contact_id: contact.id)
+        contact.address = address
+        contact.save!
+    end
+    puts "Adding address completed"
 
   end
 end
